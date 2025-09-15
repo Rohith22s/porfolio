@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio</title>
+
+  <!-- Import Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* Smooth Scroll */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* ---------- Scroll Reveal ---------- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 1s ease;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ----------------------------------- */
+
+    /* Navigation Bar */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 70px;
+      background: rgba(0, 0, 0, 0.5);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    nav .logo a {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #fff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    nav .logo a:hover {
+      color: #ff7bff;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 40px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 500;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 0%;
+      height: 3px;
+      background: #ff7bff;
+      transition: width 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #ff7bff;
+    }
+
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+
+    /* Hamburger Menu */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 6px;
+    }
+
+    .menu-toggle span {
+      height: 3px;
+      width: 25px;
+      background: #fff;
+      border-radius: 2px;
+      transition: 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 15px 30px;
+      }
+
+      nav ul {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding: 0 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
+      }
+
+      nav ul.active {
+        max-height: 400px;
+        padding: 20px 0;
+      }
+
+      .menu-toggle {
+        display: flex;
+      }
+    }
+
+    /* About Me Section */
+    #about {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 80px 70px;
+      gap: 50px;
+      flex-wrap: wrap;
+    }
+
+    .about-text {
+      flex: 1 1 50%;
+      max-width: 600px;
+    }
+
+    .about-text h1 {
+      font-size: 3rem;
+      font-weight: 600;
+      background: linear-gradient(270deg, violet, lightgreen, violet);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientMove 5s ease infinite;
+      margin: 0 0 15px 0;
+    }
+
+    @keyframes gradientMove {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .about-text h2 {
+      font-size: 2rem;
+      font-weight: 500;
+      color: lightgreen;
+      margin: 0 0 15px 0;
+    }
+
+    #role {
+      display: inline-block;
+      min-width: 240px;
+      height: 2.9rem;
+      overflow: hidden;
+      white-space: nowrap;
+      color: lightgreen;
+      font-weight: 500;
+      font-size: 2rem;
+      vertical-align: middle;
+    }
+
+    #role:hover {
+      color: violet;
+    }
+
+    .about-image img {
+      max-width: 300px;
+      width: 100%;
+      height: auto;
+      border-radius: 39px;
+      padding: 5px;
+      background: linear-gradient(270deg, violet, lightgreen, violet);
+      background-size: 300% 300%;
+      animation: gradientMove 5s ease infinite;
+      object-fit: cover;
+    }
+
+    /* Skills Section */
+    #skills,
+    #tools {
+      padding: 80px 70px;
+      text-align: center;
+    }
+
+    #skills h1,
+    #tools h1,
+    #projects h1,
+    #contact h1 {
+      font-size: 3rem;
+      font-weight: 600;
+      background: linear-gradient(270deg, violet, lightgreen, violet);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientMove 5s ease infinite;
+      margin: 0;
+    }
+
+    .skills-logos,
+    .tools-logos {
+      display: flex;
+      justify-content: center;
+      gap: 100px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .skills-logos img,
+    .tools-logos img {
+      width: 80px;
+      height: 80px;
+      transition: transform 0.3s ease;
+    }
+
+    .skills-logos img:hover,
+    .tools-logos img:hover {
+      transform: scale(1.2);
+    }
+
+    /* Projects Section */
+    #projects {
+      padding: 80px 70px;
+      text-align: center;
+    }
+
+    .projects-slider {
+      display: flex;
+      gap: 50px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .project-card {
+      background: #000000;
+      padding: 20px;
+      border-radius: 15px;
+      width: 200px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      transition: transform 0.3s ease;
+      justify-items: center;
+    }
+
+    .proj {
+      width: 220px;
+      height: 180px;
+      border-radius: 20px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    .one {
+      background-image: url('cal.png');
+    }
+
+    .two {
+      background-image: url('guss.png');
+    }
+
+    .three {
+      background-image: url('gallay.png');
+    }
+
+    .four {
+      background-image: url('emoji.png');
+    }
+
+    .project-card h3 {
+      margin-top: 15px;
+      font-size: 1.5rem;
+      color: lightgreen;
+    }
+
+    .project-card:hover {
+      transform: scale(1.05);
+    }
+
+    .project-card h3:hover {
+      color: violet;
+    }
+
+    /* Divider line between sections */
+    .divider {
+      margin-top: 5px;
+      margin-bottom: 50px;
+      border: 0;
+      height: 2px;
+      width: 80%;
+      background: #ff7bff;
+      border-radius: 5px;
+    }
+
+    /* Contact Section */
+    #contact {
+      padding: 20px;
+      text-align: center;
+      background: #000;
+    }
+
+    #contact h1 {
+      font-size: 20px;
+    }
+
+    .contact-info {
+      margin: 5px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 13px;
+    }
+
+    .contact-info a {
+      color: lightgreen;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .contact-info a:hover {
+      color: violet;
+    }
+
+    /* ---------------- Mobile Responsive Grid/Flex ---------------- */
+    @media (max-width: 768px) {
+
+      /* General body */
+      body {
+        font-size: 14px;
+        line-height: 1.6;
+        padding: 0;
+        margin: 0;
+      }
+
+      /* Navbar */
+      nav {
+        padding: 12px 20px;
+      }
+
+      nav ul {
+        gap: 15px;
+        padding: 0 0;
+      }
+
+      nav ul li a {
+        font-size: 1rem;
+      }
+
+      /* About Section */
+      #about {
+        flex-direction: column;
+        text-align: center;
+        padding: 40px 20px;
+        gap: 20px;
+      }
+
+      .about-text h1 {
+        font-size: 2rem;
+      }
+
+      .about-text h2 {
+        font-size: 1.3rem;
+      }
+
+      .about-text h3 {
+        font-size: 0.95rem;
+        font-weight: 400;
+      }
+
+      .about-image img {
+        max-width: 180px;
+        border-radius: 20px;
+      }
+
+      /* Skills and Tools Section */
+      #skills,
+      #tools {
+        padding: 50px 20px;
+      }
+
+      .skills-logos,
+      .tools-logos {
+        display: flex;
+        justify-content: space-evenly;
+        gap: 25px;
+        margin-top: 25px;
+      }
+
+      .skills-logos img,
+      .tools-logos img {
+        width: 65px;
+        height: 65px;
+      }
+
+      /* Projects Section */
+      #projects {
+        padding: 50px 20px;
+      }
+
+      .projects-slider {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        justify-items: center;
+      }
+
+      .project-card {
+        width: 100%;
+        max-width: 280px;
+        padding: 15px;
+      }
+
+      .proj {
+        width: 100%;
+        height: 150px;
+        border-radius: 15px;
+      }
+
+      .project-card h3 {
+        font-size: 1.2rem;
+      }
+
+      /* Divider */
+      .divider {
+        width: 90%;
+      }
+
+      /* Contact Section */
+      #contact {
+        padding: 30px 20px;
+      }
+
+      #contact h1 {
+        font-size: 1.5rem;
+      }
+
+      .contact-info {
+        font-size: 0.9rem;
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <div class="logo"><a href="#" style="color: #ff7bff;">Portfolio</a></div>
+    <div class="menu-toggle" id="menu-toggle">
+      <span></span><span></span><span></span>
+    </div>
+    <ul id="nav-links">
+      <li><a href="#about">About Me</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#tools">Tools</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact Me</a></li>
+    </ul>
+  </nav>
+
+  <!-- About Me -->
+  <section id="about">
+    <div class="about-text reveal">
+      <h1>YO!, I'm Rohith S</h1>
+      <h1>About Me</h1>
+      <h2 id="role">Frontend Developer</h2>
+      <h3>I’m currently pursuing my degree at R P Sarathy Institute of Technology. I’m working towards becoming a Full
+        Stack Developer, with a special interest in front-end design. I enjoy creating responsive and visually engaging
+        websites that are both interactive and user-friendly. I’m always eager to learn new skills and improve as I grow
+        in the field of web development.</h3>
+    </div>
+    <div class="about-image reveal">
+      <img src="profile.png" alt="Profile">
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills" class="reveal">
+    <h1>Skills</h1>
+    <div class="skills-logos">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JS">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python">
+    </div>
+  </section>
+
+  <!-- Tools -->
+  <section id="tools" class="reveal">
+    <h1>Tools</h1>
+    <div class="tools-logos">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="VS Code">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma">
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="reveal">
+    <h1>Projects</h1>
+    <div class="projects-slider">
+      <div class="project-card" onclick="Showcal()">
+        <div class="proj one"></div>
+        <h3>Simple Calculator</h3>
+      </div>
+      <div class="project-card" onclick="Showgus()">
+        <div class="proj two"></div>
+        <h3>Guess Number Game</h3>
+      </div>
+      <div class="project-card" onclick="Showgallay()">
+        <div class="proj three"></div>
+        <h3>Gallery Webpage</h3>
+      </div>
+      <div class="project-card" onclick="Showemoji()">
+        <div class="proj four"></div>
+        <h3>Emoji Battle Game</h3>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- Contact -->
+  <section id="contact" class="reveal">
+    <h1>Contact Details</h1>
+    <div class="contact-info">
+      <p>📧 Email: <a href="mailto:rohithsathish701@gmail.com">rohithsathish701@gmail.com</a></p>
+      <p>🔗 LinkedIn: <a href="https://linkedin.com/in/rohith-s-7a1208345"
+          target="_blank">linkedin.com/in/rohith-s-7a1208345</a></p>
+      <p>💻 GitHub: <a href="https://github.com/Rohith22s" target="_blank">github.com/Rohith22s</a></p>
+      <p>📱 Mobile: <a href="tel:+917530019229">+91 75300 19229</a></p>
+    </div>
+  </section>
+
+  <script>
+    const roles = ["Frontend Developer", "UI Designer"];
+    let roleIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    const typingSpeed = 100;
+    const erasingSpeed = 70;
+    const delayBetween = 1500; // pause before deleting
+
+    const roleElement = document.getElementById("role");
+
+    function typeEffect() {
+      const currentRole = roles[roleIndex];
+
+      if (!isDeleting) {
+        roleElement.textContent = currentRole.substring(0, charIndex + 1);
+        charIndex++;
+
+        if (charIndex === currentRole.length) {
+          isDeleting = true;
+          setTimeout(typeEffect, delayBetween);
+          return;
+        }
+      } else {
+        roleElement.textContent = currentRole.substring(0, charIndex - 1);
+        charIndex--;
+
+        if (charIndex === 0) {
+          isDeleting = false;
+          roleIndex = (roleIndex + 1) % roles.length;
+        }
+      }
+
+      setTimeout(typeEffect, isDeleting ? erasingSpeed : typingSpeed);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      typeEffect();
+    });
+
+    function Showcal() {
+      window.location.href = "calculater.html";
+    }
+
+    function Showemoji() {
+      window.location.href = "emoji.html";
+    }
+
+    function Showgus() {
+      window.location.href = "guess.html";
+    }
+
+    function Showgallay() {
+      window.location.href = "gallay.html";
+    }
+
+    // Hamburger toggle
+    const toggle = document.getElementById("menu-toggle");
+    const navLinks = document.getElementById("nav-links");
+    toggle.addEventListener("click", () => {
+      navLinks.classList.toggle("active");
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll(".reveal");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("active");
+        }
+      });
+    }, { threshold: 0.5 });
+
+    reveals.forEach(r => {
+      observer.observe(r);
+    });
+  </script>
+</body>
+
+</html>

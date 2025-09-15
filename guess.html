@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guess the Number</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 50%, #6a82fb 100%);
+      color: #fff;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .game-container {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.4);
+      width: 360px;
+      animation: fadeIn 1s ease-in-out;
+      backdrop-filter: blur(8px);
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+      color: black;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin: 8px 0;
+    }
+
+    .scoreboard {
+      margin: 15px 0;
+      font-size: 1rem;
+      color: black;
+      font-weight: bold;
+    }
+
+    .options {
+      display: flex;
+      justify-content: space-between;
+      margin: 20px 0;
+    }
+
+    .option-btn {
+      background: linear-gradient(135deg, #42e695, #3bb2b8);
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 30%;
+    }
+
+    .option-btn:hover {
+      background: linear-gradient(135deg, #3bb2b8, #42e695);
+      transform: scale(1.1);
+    }
+
+    #playAgain {
+      background: linear-gradient(135deg, #ff9966, #ff5e62);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 1rem;
+      border-radius: 12px;
+      cursor: pointer;
+      display: none;
+      margin-top: 15px;
+      transition: 0.3s;
+    }
+
+    #playAgain:hover {
+      background: linear-gradient(135deg, #ff5e62, #ff9966);
+      transform: scale(1.05);
+    }
+
+    #message {
+      font-weight: bold;
+      margin-top: 10px;
+      font-size: 1.2rem;
+      color: #fff;
+    }
+
+    #answer {
+      margin-top: 10px;
+      font-size: 1rem;
+      color: #ffe082;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <h1>🎲 Guess the Number</h1>
+    <p>Pick the correct number between <b>1</b> and <b>20</b>!</p>
+
+    <div class="scoreboard">
+      🏆 Score: <span id="score">0</span> | 🎯 Attempts: <span id="attempts">0</span>
+    </div>
+
+    <div class="options" id="options"></div>
+
+    <p id="message"></p>
+    <p id="answer"></p>
+    <button id="playAgain" onclick="resetGame()">🔄 Play Again</button>
+  </div>
+
+  <script>
+    let randomNumber;
+    let score = 0;
+    let attempts = 0;
+
+    const message = document.getElementById("message");
+    const answer = document.getElementById("answer");
+    const optionsDiv = document.getElementById("options");
+    const playAgainBtn = document.getElementById("playAgain");
+    const scoreSpan = document.getElementById("score");
+    const attemptsSpan = document.getElementById("attempts");
+
+    function generateOptions() {
+      randomNumber = Math.floor(Math.random() * 20) + 1;
+      let options = [randomNumber];
+
+      while (options.length < 3) {
+        let wrong = Math.floor(Math.random() * 20) + 1;
+        if (!options.includes(wrong)) {
+          options.push(wrong);
+        }
+      }
+
+      options.sort(() => Math.random() - 0.5);
+      optionsDiv.innerHTML = "";
+      options.forEach(num => {
+        let btn = document.createElement("button");
+        btn.textContent = num;
+        btn.className = "option-btn";
+        btn.onclick = () => checkGuess(num);
+        optionsDiv.appendChild(btn);
+      });
+
+      attempts = 0;
+      attemptsSpan.textContent = attempts;
+    }
+
+    function checkGuess(userGuess) {
+      attempts++;
+      attemptsSpan.textContent = attempts;
+
+      if (userGuess < randomNumber) {
+        message.textContent = "📉 Too low!";
+        message.style.color = "#ff5252";
+      } else if (userGuess > randomNumber) {
+        message.textContent = "📈 Too high!";
+        message.style.color = "#ff9800";
+      } else {
+        message.textContent = "🎉 Correct!";
+        message.style.color = "#00e676";
+        answer.textContent = "✅ The answer was " + randomNumber;
+        playAgainBtn.style.display = "inline-block";
+
+        score++;
+        scoreSpan.textContent = score;
+
+        disableOptions();
+      }
+    }
+
+    function disableOptions() {
+      document.querySelectorAll(".option-btn").forEach(btn => {
+        btn.disabled = true;
+        btn.style.opacity = "0.6";
+        btn.style.cursor = "not-allowed";
+      });
+    }
+
+    function resetGame() {
+      message.textContent = "";
+      answer.textContent = "";
+      playAgainBtn.style.display = "none";
+      generateOptions();
+    }
+
+    generateOptions();
+  </script>
+</body>
+</html>
